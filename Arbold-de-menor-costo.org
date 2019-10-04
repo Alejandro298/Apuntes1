@@ -1,0 +1,217 @@
+#+title: Árbol generador de menor costo
+
+#+options: toc:nil
+
+#+latex_header: \usepackage{listings}
+#+latex_header: \lstalias{ipython}{python}
+#+latex_header: \lstset{basicstyle=\small\ttfamily, frame=single}
+
+#+latex_header: \usepackage{bera}
+
+#+property: header-args:ipython :exports both :cache yes :session arbol :results raw drawer
+
+* Problema
+
+Supongamos que a cada arista de la gráfica completa \(K_{n}\) se le
+asigna un valor "peso".
+Si a cada subgráfica le asignamos un peso igual a la suma de los pesos
+de sus aristas, consideraremos el problema de encontrar el arbol
+generador de menor peso.
+
+* Algoritmo de Kruskal
+
+El algoritmo de Kruskal consiste en escoger sucesivamente la arista
+más barata que no forme ciclo con la gráfica determinada por las
+aristas escogidas previamente (si en algun momento hay varias aristas
+más baratas y factibles, se escoge cualquiera).
+Para una gráfica \(G\) con grado \(n\) dicho algoritmo acaba en
+exáctamente \(n-1\) pasos, y dicho arbol es de menor costo
+
+* Implementacion en Python
+
+Primeramente vamos a importar las bibliotecas que vamos a utilizar.
+
+#+begin_src ipython
+import networkx as nx
+import matplotlib.pyplot as plt 
+from random import random  as random 
+from scipy.spatial.distance import euclidean
+#+end_src
+
+
+#+RESULTS[e37750db61d6342d9c18282367700f0550b699f2]:
+:results:
+# Out[1]:
+:end:
+
+A continuacion definiremos una gráfica aleatoria con 10 vertices.
+
+#+begin_src ipython
+g=nx.gnp_random_graph(10, 0.2)
+#+end_src
+
+#+RESULTS[686d2b8b58905b6e9c928e84fd5489c436bec335]:
+:results:
+# Out[2]:
+:end:
+
+veremos si nuestra gráfica es un bosque
+
+#+begin_src ipython
+nx.is_forest(g), nx.is_connected(g)
+#+end_src
+
+#+RESULTS[e7d1dbb3a296c52111081a2873e11b0c5e1bcb99]:
+:results:
+# Out[3]:
+: (True, False)
+:end:
+
+A continuacion dibujaremos esta gráfica.
+
+#+begin_src ipython
+nx.draw(g, with_labbels=True) 
+#+end_src
+
+#+RESULTS[8de17d27537f37a364b75be92ec223084240aef4]:
+:results:
+# Out[6]:
+[[file:./obipy-resources/1933oPH.png]]
+:end:
+
+Calcularemos las componentes conexas de esta gráfica.
+
+#+begin_src ipython
+list(nx.connected_components(g))
+#+end_src
+
+#+RESULTS[fd43bac86ab4e6adb6ece858cb2c922a37acadb0]:
+:results:
+# Out[8]:
+: [{0, 1, 3, 4}, {2, 5, 6, 8, 9}, {7}]
+:end:
+
+Veamos la componente que contiene al vertice 2.
+
+#+begin_src ipython
+nx.node_connected_component(g, 2)
+#+end_src
+
+#+RESULTS[46f9dabf3af17b6574e7108bc8b02681d03298fd]:
+:results:
+# Out[9]:
+: {2, 5, 6, 8, 9}
+:end:
+
+A continuacion dibujaremos un arbol escogido aleatoriamente.
+
+#+begin_src ipython
+t=nx.random_tree(10)
+nx.draw(t, with_labels=True)
+#+end_src
+
+#+RESULTS[40cadd15ea973ae0dd4c6e9ce48469aa6584d9b0]:
+:results:
+# Out[10]:
+[[file:./obipy-resources/19331ZN.png]]
+:end:
+
+* Puntos en el plano 
+Si tenemos dos listas de numeros de tamaño =n=, podemos dibujar =n=
+puntos en el plano, tomando las coordenadas =x= de la primera lista y
+las coordenadas =y= de la segunda.
+
+#+begin_src ipython
+plt.plot([1,1,2],[1,2,3],'bx')
+plt.axis([0,3,0,4])
+plt.show()
+#+end_src
+
+#+RESULTS[a2473dc10d4388557d58b145c3b398832095523d]:
+:results:
+# Out[12]:
+[[file:./obipy-resources/1933PuZ.png]]
+:end:
+
+Vamos a definiruna funcion que dibuje =n= puntos en el plano
+aleatoriamente.
+
+#+begin_src ipython
+def puntos_en_el_plano(n):
+    listax=[]
+    listay=[]
+    for i in range(n):
+        listax.append(random())
+        listay.append(random())
+    return listax, listay
+#+end_src
+
+#+RESULTS[1cddae6365e0c7df4eef77ad1b5bc8bbf58f96c2]:
+:results:
+# Out[13]:
+:end:
+
+#+begin_src ipython
+puntos=puntos_en_el_plano(50)
+#+end_src
+
+#+RESULTS[9ff8894398a2a07a6c3e77984fe46197b54683d8]:
+:results:
+# Out[15]:
+:end:
+
+
+
+
+
+#+begin_src ipython
+list(nx.puntos_en_el_plano())
+#+end_src
+
+
+#+begin_src ipython
+plt.plot(puntos[0], puntos[1], 'ro')
+plt.show()
+#+end_src
+
+#+RESULTS[12dc3d5ca4cf9f9356e0578c369d2dd432cee3c9]:
+:results:
+# Out[19]:
+[[file:./obipy-resources/1933DXy.png]]
+:end:
+
+
+Hagamos una funcion tal que a partir de dos listas genere el dibujo 
+
+#+begin_src ipython
+def dibujo_puntos(listax,listay):
+    plt.plot(listax, listay, 'ro')
+    plt.axis([-0.1,1.1,-0.1,1.1])
+    plt.gca().set_aspect('equal')
+    plt.show()
+#+end_src
+
+#+RESULTS[2a39b4b48fa54c16ca027a04b31991530ef660b7]:
+:results:
+# Out[16]:
+:end:
+ 
+#+begin_src ipython
+dibujo_puntos(*puntos)
+#+end_src
+
+#+RESULTS[274d1e4a2e4c1e9a72c9f464a39ff8637dd52977]:
+:results:
+# Out[17]:
+[[file:./obipy-resources/19332Ms.png]]
+:end:
+
+
+
+
+
+
+# Local Variables:
+# org-confirm-babel-evaluate: nil
+# End:
+
