@@ -270,12 +270,12 @@ def grafica_euclidiana(listax,listay):
 Ahora se dibujará la gráfica, en lugar de puntos[1], Puntos[2], solo
 se pone **puntos
 #+begin_src ipython
-G = grafica_euclidiana(*puntos)
+g = grafica_euclidiana(*puntos)
 #+end_src
 
-#+RESULTS[5cab30322f68f1a5e7b97202da81ea6d50bafacf]:
+#+RESULTS[b00a44048d18abb76a1381ea87ba23400f94169a]:
 :results:
-# Out[18]:
+# Out[32]:
 :end:
 
 #+begin_src ipython
@@ -287,32 +287,50 @@ def arbol_menor_costo(G):
     while len(T.edges()) < len(G)-1:
         e = aristas.pop()
         if not(e[0] in nx.node_connected_component(T, e[1])):
-        T.add.edge(e[0], e[1])
+            T.add_edge(e[0], e[1])
     return T
 #+end_src
+
+#+RESULTS[6101b4e0e24b93a9270a473d192f897e1b8dae9a]:
+:results:
+# Out[30]:
+:end:
 
 
 
 #+begin_src ipython
 plt.figure(figsize=(10,10))
-t = arbol__menor_costo(T)
+t = arbol_menor_costo(g)
 nx.draw(t)
 
 #+end_src
 
+#+RESULTS[0f69d93ac7e800daf4940878aa93373c0cce7364]:
+:results:
+# Out[34]:
+[[file:./obipy-resources/1956_CV.png]]
+:end:
+
 
 #+begin_src ipython
+plt.figure(figsize=(10, 10))
 for v in t.nodes():
-    plt.plottttt(v[0], v[1], 'ro')
+    plt.plot(v[0], v[1], 'ro')
 for e in t.edges():
     p1 = e[0]
     p2 = e[1]
-plt.plot([p1[0], p2[0]], [p1[1],p2[1]], color='blue')
+    plt.plot([p1[0], p2[0]], [p1[1],p2[1]], color='blue')
 
 plt.axis([-0.1, 1.1, -0.1, 1.1])
-plt.gca().set_apct('equal')
-plt.show
+plt.gca().set_aspect('equal')
+plt.show()
 #+end_src
+
+#+RESULTS[8776935751bd833de1f3dbfce442313ed5e6d8a2]:
+:results:
+# Out[37]:
+[[file:./obipy-resources/1956MNb.png]]
+:end:
 
 
 # Local Variables:
