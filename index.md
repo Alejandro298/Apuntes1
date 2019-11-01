@@ -1,4 +1,6 @@
-## Welcome to GitHub Pages
+## Esta es mi pagina de Teoria de Gráficas
+
+En teoría de gráficas, el principio de Ramsey el principio básico es que el desorden absoluto es imposible. Esto pues en cualquier desorden suficientemente grande la belleza del orden sutge
 
 You can use the [editor on GitHub](https://github.com/Alejandro298/Apuntes1/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
 
